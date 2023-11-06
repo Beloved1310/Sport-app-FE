@@ -72,13 +72,9 @@ function Navbar(props) {
             </div>
           ) : (
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button
-                className="btn btn-primary"
-                onClick={logout}
-                role="button"
-              >
-                <i className="fa-solid fa-user mx-1"></i>Logout
-              </button>{' '}
+               <Link to="/settings" className="btn btn-primary" role="button">
+    <i className="fa-solid fa-cog mx-1"></i>Settings
+  </Link>
             </div>
           )}
         </div>

@@ -5,6 +5,7 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Alert from './components/Alert'
 import Signup from './components/register'
+import Settings from './components/Settings'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SportState from './context/SportState'
 
@@ -41,6 +42,11 @@ function App() {
             <Route
               exact
               path="/login"
+              element={<Login showAlert={showAlert} />}
+            />
+             <Route
+              exact
+              path="/setting"
               element={<Login showAlert={showAlert} />}
             />
           </Routes>

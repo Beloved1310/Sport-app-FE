@@ -24,7 +24,7 @@ function SettingsPage(props) {
       const response = await fetch(
         "https://to-do-list-backend-application.vercel.app/api/auth/updteUser",
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },

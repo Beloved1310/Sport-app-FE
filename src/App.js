@@ -1,26 +1,27 @@
-import React, { useState } from 'react'
-import ForgetPassword from './components/ForgetPassword.js'
-import Navbar from './components/Navbar'
-import Home from './components/Home'
-import Login from './components/Login'
-import Alert from './components/Alert'
-import Signup from './components/register'
-import Settings from './components/Settings'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import SportState from './context/SportState'
+import React, { useState } from "react";
+import ForgetPassword from "./components/ForgetPassword.js";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Alert from "./components/Alert";
+import Signup from "./components/register";
+import Settings from "./components/Settings";
+import Profile from "./components/Profile";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SportState from "./context/SportState";
 
 function App() {
-  const [alert, setAlert] = useState(null)
+  const [alert, setAlert] = useState(null);
   const showAlert = (message, type) => {
     setAlert({
       msg: message,
       type: type,
-    })
+    });
 
     setTimeout(() => {
-      setAlert(null)
-    }, 2000)
-  }
+      setAlert(null);
+    }, 2000);
+  };
   return (
     <>
       <SportState showAlert={showAlert}>
@@ -44,16 +45,22 @@ function App() {
               path="/login"
               element={<Login showAlert={showAlert} />}
             />
-             <Route
+            <Route
               exact
               path="/setting"
-              element={<Login showAlert={showAlert} />}
+              element={<Settings showAlert={showAlert} />}
+            />
+
+            <Route
+              exact
+              path="/profile"
+              element={<Profile showAlert={showAlert} />}
             />
           </Routes>
         </Router>
       </SportState>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

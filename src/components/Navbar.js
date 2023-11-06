@@ -1,14 +1,6 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 function Navbar(props) {
-  let navigate = useNavigate()
-
-  const logout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('success')
-    localStorage.removeItem('name')
-    navigate('/login')
-  }
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-nav p-4">
       <div className="container-fluid">
@@ -51,13 +43,13 @@ function Navbar(props) {
                 aria-current="page"
                 to="/forgetPassword"
               >
-                {' '}
-                ForgetPassword{' '}
+                {" "}
+                ForgetPassword{" "}
               </Link>
             </li>
           </ul>
 
-          {!localStorage.getItem('token') ? (
+          {!localStorage.getItem("token") ? (
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
               <Link
                 className="btn btn-primary me-md-2"
@@ -72,15 +64,19 @@ function Navbar(props) {
             </div>
           ) : (
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-               <Link to="/settings" className="btn btn-primary" role="button">
-    <i className="fa-solid fa-cog mx-1"></i>Settings
-  </Link>
+              <Link to="/settings" className="btn btn-primary" role="button">
+                <i className="fa-solid fa-cog mx-1"></i>Settings
+              </Link>
+
+              <Link to="/profile" className="btn btn-primary" role="button">
+                <i className="fa-solid fa-user mx-1"></i>Profile
+              </Link>
             </div>
           )}
         </div>
       </div>
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

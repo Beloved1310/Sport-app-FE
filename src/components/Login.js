@@ -69,7 +69,7 @@ function Login(props) {
             <br />
 
             <div className="mb-3">
-              <label className="form-label">Login Method</label>
+              <label className="form-label">Login Method: </label>
               <div className="form-check form-check-inline">
                 <input
                   className="form-check-input"

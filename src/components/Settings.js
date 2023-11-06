@@ -6,8 +6,7 @@ function SettingsPage(props) {
   const [userData, setUserData] = useState({
     username: "",
     email: "",
-    currentPassword: "",
-    newPassword: "",
+    password: "",
     confirmPassword: "",
   });
   let navigate = useNavigate();
@@ -32,7 +31,7 @@ function SettingsPage(props) {
           body: JSON.stringify({
             username: userData.username,
             email: userData.email,
-            newPassword: userData.newPassword,
+            password: userData.password,
           }),
         }
       );
@@ -95,21 +94,6 @@ function SettingsPage(props) {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="currentPassword" className="form-label">
-                  Current Password
-                </label>
-                <input
-                  type="password"
-                  value={userData.currentPassword}
-                  onChange={onChange}
-                  className="form-control"
-                  id="currentPassword"
-                  name="currentPassword"
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
                 <label htmlFor="newPassword" className="form-label">
                   New Password
                 </label>
@@ -118,8 +102,8 @@ function SettingsPage(props) {
                   value={userData.newPassword}
                   onChange={onChange}
                   className="form-control"
-                  id="newPassword"
-                  name="newPassword"
+                  id="password"
+                  name="password"
                   required
                 />
               </div>

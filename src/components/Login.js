@@ -17,18 +17,14 @@ function Login(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        'https://to-do-list-backend-application.vercel.app/api/auth/loginUser',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(credentials),
+      const response = await axios.post('https://to-do-list-backend-application.vercel.app/api/auth/loginUser', credentials, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
-      const json = await response.json();
-
+      });
+  
+      const json = response.data;
+  
       if (json.success) {
         localStorage.setItem('token', json.authToken);
         localStorage.setItem('username', json.username);
@@ -39,9 +35,9 @@ function Login(props) {
         props.showAlert('Invalid Credentials', 'warning');
       }
     } catch (error) {
-      props.showAlert(`db not connected ${error}`, 'warning');
+      props.showAlert(`DB not connected ${error}`, 'warning');
     }
-  }
+  };
 
   const onChange = (e) => {
     if (e.target.name.startsWith('phone.')) {

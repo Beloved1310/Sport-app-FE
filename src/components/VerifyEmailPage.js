@@ -1,66 +1,78 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import Alert from './Alert';
-
+import React, { useState } from "react";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import Alert from "./Alert";
+import axios from "axios";
 
 function VerifyEmailPage(props) {
   const [verificationData, setVerificationData] = useState({
-    token: '',
-    otp: '',
+    token: "",
+    otp: "",
     phone: {
-      countryCode: '',
-      localFormat: '',
+      countryCode: "",
+      localFormat: "",
     },
   });
   const navigate = useNavigate();
   const location = useLocation();
+  const { token } = useParams();
+
+  console.log(token, "jjjj");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Extract the token from the URL query parameters
-    const urlParams = new URLSearchParams(location.search);
-    const token = urlParams.get('token');
-
     try {
-      const response = await fetch('https://your-api-url/verifyEmail', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const response = await axios.post(
+        "https://sports-nations-aeed0bb0afdc.herokuapp.com/api/user/authentication/activate",
+        {
           token: token,
           otp: verificationData.otp,
           phone: verificationData.phone,
-        }),
-      });
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      const json = await response.json();
-
-      if (json.success) {
-        props.showAlert('Login Success', 'success');
-        navigate('/login');
+      if (response.status === 200) {
+        props.showAlert("Login Success", "success");
+        navigate("/login");
+      } else if (response.status === 404) {
+        props.showAlert(response.data.message, "warning");
+      } else if (response.status === 400) {
+        props.showAlert(response.data.message, "warning");
       } else {
-        props.showAlert('Invalid Credentials', 'warning')
+        props.showAlert("Invaid Credentials", "warning");
       }
     } catch (error) {
-      // Handle network or other errors
-      console.error(error);
+      if (error.response) {
+        // Handle the error message from the response
+        props.showAlert(error.response.data.message, "warning");
+      } else {
+        // Handle other types of errors
+        console.log(error);
+        props.showAlert("Input did not match", "warning");
+      }
     }
   };
 
   const onChange = (e) => {
-    if (e.target.name.startsWith('phone.')) {
+    if (e.target.name.startsWith("phone.")) {
       // Handle phone number inputs separately
       setVerificationData({
         ...verificationData,
         phone: {
           ...verificationData.phone,
-          [e.target.name.split('.')[1]]: e.target.value,
+          [e.target.name.split(".")[1]]: e.target.value,
         },
       });
     } else {
-      setVerificationData({ ...verificationData, [e.target.name]: e.target.value });
+      setVerificationData({
+        ...verificationData,
+        [e.target.name]: e.target.value,
+      });
     }
   };
 

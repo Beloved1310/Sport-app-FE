@@ -7,6 +7,7 @@ import Alert from "./components/Alert";
 import Signup from "./components/register";
 import Settings from "./components/Settings";
 import Profile from "./components/Profile";
+import VerifyEmailPage from "./components/VerifyEmailPage"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SportState from "./context/SportState";
 
@@ -20,7 +21,7 @@ function App() {
 
     setTimeout(() => {
       setAlert(null);
-    }, 2000);
+    }, 4000);
   };
   return (
     <>
@@ -55,6 +56,12 @@ function App() {
               exact
               path="/profile"
               element={<Profile showAlert={showAlert} />}
+            />
+
+             <Route
+              exact
+              path="/verify/:token"
+              element={<VerifyEmailPage showAlert={showAlert} />}
             />
           </Routes>
         </Router>

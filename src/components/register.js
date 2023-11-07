@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Alert from './Alert'
-import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 function Signup(props) {
   const [credentials, setCredentials] = useState({
@@ -8,52 +8,62 @@ function Signup(props) {
     sportInterest: '',
     email: '',
     password: '',
-    cpassword: '',
+    confirm_password: '',
     phone: {
       countryCode: '',
       localFormat: '',
     },
   })
-  let navigate = useNavigate()
   const handleSubmit = async (e) => {
-    e.preventDefault()
-
+    e.preventDefault();
     try {
-      if (credentials.password !== credentials.cpassword) {
-        props.showAlert('Password Inccorect', 'info')
+      if (credentials.password !== credentials.confirm_password) {
+        props.showAlert('Password Incorrect', 'info');
       } else {
-        const response = await fetch(
-          'https://to-do-list-backend-application.vercel.app/api/auth/createUser',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              username: credentials.username,
-              email: credentials.email,
-              password: credentials.password,
-              cpassword: credentials.cpassword,
-              phone: credentials.phone,
-            }),
+        const response = await axios.post('https://sports-nations-aeed0bb0afdc.herokuapp.com/api/user/register', {
+          username: credentials.username,
+          email: credentials.email,
+          sportInterest: credentials.sportInterest,
+          password: credentials.password,
+          confirm_password: credentials.confirm_password,
+          phone: credentials.phone,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
           },
-        )
-        const json = await response.json()
-        console.log(json)
-        if (!json.success) {
-          props.showAlert('Email with this your Already Exists', 'warning')
+        });
+  
+        if (response.status === 200) {
+          props.showAlert(response.data.message, 'success');
+          setCredentials({
+            username: '',
+            sportInterest: '',
+            email: '',
+            password: '',
+            confirm_password: '',
+            phone: {
+              countryCode: '',
+              localFormat: '',
+            },
+          });
+        } else if (response.status === 400) {
+          props.showAlert(response.data.message, 'warning');
         } else {
-          localStorage.setItem('token', json.authToken)
-          localStorage.setItem('name', json.name)
-          localStorage.setItem('success', json.success)
-          navigate('/login')
-          props.showAlert('Signup Success', 'success')
+          props.showAlert('An error occurred', 'warning');
         }
       }
     } catch (error) {
-      props.showAlert('db not connected', 'warning')
+      if (error.response) {
+        // Handle the error message from the response
+        props.showAlert(error.response.data.message, 'warning');
+      } else {
+        // Handle other types of errors
+        console.log(error);
+        props.showAlert('Input did not match', 'warning');
+      }
     }
   }
+  
 
   const onChange = (e) => {
     if (e.target.name === 'phone.countryCode' || e.target.name === 'phone.localFormat') {
@@ -133,7 +143,7 @@ function Signup(props) {
                     type="text"
                     value={credentials.phone.localFormat}
                     onChange={onChange}
-                    className="form-control"
+                    className="form-control w-2"
                     name="phone.localFormat"
                     placeholder="Local Format"
                     required
@@ -174,16 +184,16 @@ function Signup(props) {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="cpassword" className="form-label">
+                <label htmlFor="confirm_password" className="form-label">
                   <i className="fa-solid fa-lock"></i> Confirm Password
                 </label>
                 <input
-                  type="cpassword"
-                  value={credentials.cpassword}
+                  type="confirm_password"
+                  value={credentials.confirm_password}
                   onChange={onChange}
                   className="form-control"
-                  name="cpassword"
-                  id="cpassword"
+                  name="confirm_password"
+                  id="confirm_password"
                   minLength={5}
                   required
                 />

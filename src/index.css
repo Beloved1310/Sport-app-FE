@@ -227,3 +227,30 @@ form{
   }
 }
 
+/* Add this CSS to your component or import a CSS file */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.card img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Add responsive styles for different screen sizes */
+@media (max-width: 576px) {
+  .card {
+    margin: 0 10px;
+  }
+}
+
+

@@ -1,46 +1,54 @@
-import React, { useState } from 'react'
-import Alert from './Alert'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import Alert from "./Alert";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function ForgetPassword(props) {
-  const [credentials, setCredentials] = useState({ email: '', newPassword: '' })
-  let navigate = useNavigate()
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      const response = await fetch(
-        'https://to-do-list-backend-application.vercel.app/api/auth/forgetPassword',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: credentials.email,
-            newPassword: credentials.newPassword,
-          }),
-        },
-      )
-      const json = await response.json()
+    e.preventDefault();
 
-      if (json.success) {
-        localStorage.setItem('token', json.authToken)
-        localStorage.setItem('name', json.name)
-        localStorage.setItem('success', json.success)
-        props.showAlert('Password Updated, Proceed to Login', 'success')
-        navigate('/login')
+    try {
+      const response = await axios.put(
+        "https://sports-nations-aeed0bb0afdc.herokuapp.com/api/user/reset-password",
+        {
+          email: credentials.email,
+          password: credentials.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        props.showAlert(response.data.message, "success");
+        navigate("/login");
+      } else if (response.status === 404) {
+        props.showAlert(response.data.message, "warning");
+      } else if (response.status === 400) {
+        props.showAlert(response.data.message, "warning");
       } else {
-        props.showAlert('Invalid Credentials', 'warning')
+        props.showAlert("Invaid Credentials", "warning");
       }
     } catch (error) {
-      props.showAlert(`db not connected ${error}`, 'warning')
+      if (error.response) {
+        // Handle the error message from the response
+        props.showAlert(error.response.data.message, "warning");
+      } else {
+        // Handle other types of errors
+        console.log(error);
+        props.showAlert("Input did not match", "warning");
+      }
     }
-  }
+  };
 
   const onChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value })
-  }
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
   return (
     <>
       <div className="container">
@@ -68,28 +76,28 @@ function ForgetPassword(props) {
               </div>
               <div className="mb-3">
                 <label
-                  htmlFor="newPassword"
-                  value={credentials.newPassword}
+                  htmlFor="password"
+                  value={credentials.password}
                   onChange={onChange}
                   className="form-label"
                 >
-                  <i className="fa-solid fa-key"></i> newPassword
+                  <i className="fa-solid fa-key"></i> password
                 </label>
                 <input
-                  type="newPassword"
+                  type="password"
                   className="form-control"
-                  value={credentials.newPassword}
-                  name="newPassword"
-                  id="newPassword"
+                  value={credentials.password}
+                  name="password"
+                  id="password"
                   onChange={onChange}
                   minLength={5}
                   required
                 />
               </div>
 
-              <div className="d-grid gap-2 col-6 mx-auto">
-                <button type="submit" className="btn btn-primary">
-                  Change Password
+              <div className="d-grid gap-2 col-6">
+                <button type="submit" className="btn btn-primary h-8">
+                  reset password
                 </button>
               </div>
             </form>
@@ -98,7 +106,7 @@ function ForgetPassword(props) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default ForgetPassword
+export default ForgetPassword;

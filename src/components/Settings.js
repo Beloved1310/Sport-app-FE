@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Alert from "./Alert";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function SettingsPage(props) {
   const [userData, setUserData] = useState({
@@ -20,29 +21,49 @@ function SettingsPage(props) {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        "https://to-do-list-backend-application.vercel.app/api/auth/updteUser",
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.error("No token found.");
+        // Handle the absence of a token, e.g., redirect to the login page.
+        return;
+      }
+      const response = await axios.put(
+        "https://sports-nations-aeed0bb0afdc.herokuapp.com/api/user/settings/update",
         {
-          method: "PUT",
+          username: userData.username,
+          email: userData.email,
+          password: userData.password,
+        },
+        {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            username: userData.username,
-            email: userData.email,
-            password: userData.password,
-          }),
         }
       );
-      const json = await response.json();
-
-      if (json.success) {
-        props.showAlert("Setting Updates", "success");
+      if (response.status === 200) {
+        console.log(response.data.message, "message");
+        props.showAlert(response.data.message, "success");
+        const newUserName = response.data.message.split(",")[0].trim();
+        localStorage.setItem("username", newUserName);
+        navigate("/");
+      } else if (response.status === 404) {
+        props.showAlert(response.data.message, "warning");
+      } else if (response.status === 400) {
+        props.showAlert(response.data.message, "warning");
       } else {
         props.showAlert("Invalid Credentials", "warning");
       }
     } catch (error) {
-      props.showAlert(`db not connected ${error}`, "warning");
+      if (error.response) {
+        // Handle the error message from the response
+        props.showAlert(error.response.data.message, "warning");
+      } else {
+        // Handle other types of errors
+        console.log(error);
+        props.showAlert("Input did not match", "warning");
+      }
     }
   };
 
@@ -71,7 +92,6 @@ function SettingsPage(props) {
                   className="form-control"
                   id="username"
                   name="username"
-                  required
                   placeholder={userData.username}
                 />
               </div>
@@ -87,7 +107,6 @@ function SettingsPage(props) {
                   className="form-control"
                   id="email"
                   name="email"
-                  required
                   placeholder={userData.email}
                 />
               </div>
@@ -103,7 +122,6 @@ function SettingsPage(props) {
                   className="form-control"
                   id="password"
                   name="password"
-                  required
                 />
               </div>
               <div className="d-grid gap-2 col-6 mx-auto">
@@ -114,9 +132,13 @@ function SettingsPage(props) {
             </form>
 
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button className="btn btn-primary" onClick={logout}>
-                <i className="fa-solid fa-user mx-1"></i>Logout
-              </button>
+              <a
+                href="/login"
+                className="btn btn-link text-primary"
+                onClick={logout}
+              >
+                <i className="fa-solid fa-user mx-1"> click on this to</i>Logout
+              </a>
             </div>
           </div>
           <div className="col-md-4"></div>

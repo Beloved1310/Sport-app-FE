@@ -93,6 +93,8 @@ function ProfilePage() {
             Sport Interest: {userData.sportInterest}
             <br />
             Phone Number: {userData.phoneNumber}
+            <br/>
+            Email: {userData.email}
           </p>
           <label className="custom-file-upload btn btn-secondary">
             <input

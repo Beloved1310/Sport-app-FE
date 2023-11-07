@@ -13,10 +13,9 @@ function VerifyEmailPage(props) {
     },
   });
   const navigate = useNavigate();
-  const location = useLocation();
+  
   const { token } = useParams();
 
-  console.log(token, "jjjj");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +36,7 @@ function VerifyEmailPage(props) {
       );
 
       if (response.status === 200) {
-        props.showAlert("Login Success", "success");
+        props.showAlert(response.data.message, "success");
         navigate("/login");
       } else if (response.status === 404) {
         props.showAlert(response.data.message, "warning");

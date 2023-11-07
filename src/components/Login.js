@@ -1,58 +1,84 @@
-import React, { useState } from 'react';
-import Alert from './Alert';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useState } from "react";
+import Alert from "./Alert";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 function Login(props) {
   const [credentials, setCredentials] = useState({
-    identifier: '',
-    password: '',
+    email: "",
+    password: "",
     phone: {
-      countryCode: '',
-      localFormat: '',
+      countryCode: "",
+      localFormat: "",
     },
   });
-  const [loginMethod, setLoginMethod] = useState('email'); // Default to email login
+  const [loginMethod, setLoginMethod] = useState("email"); // Default to email login
   let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let data = {
+      password: credentials.password,
+    };
+
+    if (loginMethod === "email" && credentials.email) {
+      data.email = credentials.email;
+    } else if (loginMethod === "phone" && credentials.phone.countryCode && credentials.phone.localFormat) {
+      data.phone = {
+        countryCode: credentials.phone.countryCode,
+        localFormat: credentials.phone.localFormat,
+      };
+    }
     try {
-      const response = await axios.post('https://to-do-list-backend-application.vercel.app/api/auth/loginUser', credentials, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      const json = response.data;
-  
-      if (json.success) {
-        localStorage.setItem('token', json.authToken);
-        localStorage.setItem('username', json.username);
-        localStorage.setItem('success', json.success);
-        props.showAlert('Login Success', 'success');
-        navigate('/');
+      const response = await axios.post(
+        "https://sports-nations-aeed0bb0afdc.herokuapp.com/api/user/login",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const { data } = response.data;
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("username", data.username);
+        // localStorage.setItem('success', json.success);
+        props.showAlert(response.data.message, "success");
+        navigate("/");
+      } else if (response.status === 404) {
+        props.showAlert(response.data.message, "warning");
+      } else if (response.status === 400) {
+        props.showAlert(response.data.message, "warning");
       } else {
-        props.showAlert('Invalid Credentials', 'warning');
+        props.showAlert("Invaid Credentials", "warning");
       }
     } catch (error) {
-      props.showAlert(`DB not connected ${error}`, 'warning');
+      if (error.response) {
+        // Handle the error message from the response
+        props.showAlert(error.response.data.message, "warning");
+      } else {
+        // Handle other types of errors
+        console.log(error);
+        props.showAlert("Input did not match", "warning");
+      }
     }
   };
 
   const onChange = (e) => {
-    if (e.target.name.startsWith('phone.')) {
+    if (e.target.name.startsWith("phone.")) {
       // Handle phone number inputs separately
       setCredentials({
         ...credentials,
         phone: {
           ...credentials.phone,
-          [e.target.name.split('.')[1]]: e.target.value,
+          [e.target.name.split(".")[1]]: e.target.value,
         },
       });
     } else {
       setCredentials({ ...credentials, [e.target.name]: e.target.value });
     }
-  }
+  };
 
   return (
     <>
@@ -73,8 +99,8 @@ function Login(props) {
                   name="loginMethod"
                   id="emailLogin"
                   value="email"
-                  checked={loginMethod === 'email'}
-                  onChange={() => setLoginMethod('email')}
+                  checked={loginMethod === "email"}
+                  onChange={() => setLoginMethod("email")}
                 />
                 <label className="form-check-label" htmlFor="emailLogin">
                   Email
@@ -87,8 +113,8 @@ function Login(props) {
                   name="loginMethod"
                   id="phoneLogin"
                   value="phone"
-                  checked={loginMethod === 'phone'}
-                  onChange={() => setLoginMethod('phone')}
+                  checked={loginMethod === "phone"}
+                  onChange={() => setLoginMethod("phone")}
                 />
                 <label className="form-check-label" htmlFor="phoneLogin">
                   Phone Number
@@ -97,18 +123,19 @@ function Login(props) {
             </div>
 
             <form onSubmit={handleSubmit}>
-              {loginMethod === 'email' ? (
+              {loginMethod === "email" ? (
                 <div className="mb-3">
-                  <label htmlFor="identifier" className="form-label">
-                    <i className="fa-solid fa-envelope-circle-check"></i> Email address
+                  <label htmlFor="email" className="form-label">
+                    <i className="fa-solid fa-envelope-circle-check"></i> Email
+                    address
                   </label>
                   <input
                     type="email"
-                    value={credentials.identifier}
+                    value={credentials.email}
                     onChange={onChange}
                     className="form-control"
-                    id="identifier"
-                    name="identifier"
+                    id="email"
+                    name="email"
                     aria-describedby="emailHelp"
                   />
                 </div>

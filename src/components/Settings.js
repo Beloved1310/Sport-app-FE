@@ -7,7 +7,6 @@ function SettingsPage(props) {
     username: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
   let navigate = useNavigate();
 
@@ -107,22 +106,6 @@ function SettingsPage(props) {
                   required
                 />
               </div>
-
-              <div className="mb-3">
-                <label htmlFor="confirmPassword" className="form-label">
-                  Confirm New Password
-                </label>
-                <input
-                  type="password"
-                  value={userData.confirmPassword}
-                  onChange={onChange}
-                  className="form-control"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  required
-                />
-              </div>
-
               <div className="d-grid gap-2 col-6 mx-auto">
                 <button type="submit" className="btn btn-primary">
                   Update

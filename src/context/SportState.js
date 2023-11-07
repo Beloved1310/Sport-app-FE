@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import SportContext from './SportContext'
+import axios from "axios";
 
 const SportState = (props) => {
-  const host = 'https://to-do-list-backend-application.vercel.app'
+  const host = 'https://sports-nations-aeed0bb0afdc.herokuapp.com'
   const SportsInitial = []
   const [Sports, setSport] = useState(SportsInitial)
 
@@ -14,7 +15,7 @@ const SportState = (props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': localStorage.getItem('token'),
+        'authorization': localStorage.getItem('token'),
       },
       body: JSON.stringify({ title, task, isComplete }),
     })
@@ -27,17 +28,24 @@ const SportState = (props) => {
   //get all the Sports
 
   const getSports = async () => {
-    //Api call
-    const response = await fetch(`${host}/api/Sport/fetchAllSport/`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'auth-token': localStorage.getItem('token'),
-      },
-    })
-    const json = await response.json()
-    setSport(json)
-  }
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.get(`${host}/api/sport/getAll`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      const responseData = response.data;
+  
+      setSport(responseData);
+    } catch (error) {
+      // Handle errors if necessary
+      console.error("Error fetching sports:", error);
+    }
+  };
+  
 
   //edit Sport
 
@@ -47,7 +55,7 @@ const SportState = (props) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': localStorage.getItem('token'),
+        'authorization': localStorage.getItem('token'),
       },
       body: JSON.stringify({ title, task, isComplete }),
     })
@@ -74,7 +82,7 @@ const SportState = (props) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': localStorage.getItem('token'),
+        'authorization': localStorage.getItem('token'),
       },
     })
     const json = response.json()

@@ -48,7 +48,7 @@ function App() {
             />
             <Route
               exact
-              path="/setting"
+              path="/settings"
               element={<Settings showAlert={showAlert} />}
             />
 

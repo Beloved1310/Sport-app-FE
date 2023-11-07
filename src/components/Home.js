@@ -1,12 +1,15 @@
 import React from 'react'
+import Sports from './Sports'
 
 
 function Home() {
   return (
-    <>
-      <h1 className="text-center display-4">welcome {localStorage.getItem('name')}</h1>
-    
-    </>
+    <div className="center">
+    <h1 className="text-center display-8 welcome-header">
+      Welcome {localStorage.getItem('username')}
+      <Sports/>
+    </h1>
+  </div>
   )
 }
 

@@ -2,10 +2,11 @@
 @tailwind components;
 @tailwind utilities; */
 
-body{
-    font-family: 'Itim', cursive;  
-   
+body {
+  font-family: 'Itim', cursive;  
+  background-image: url('https://images.unsplash.com/photo-1603988363607-e1e4a66962c6?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
 }
+
 nav,Link{
    font-size: larger;
 }
@@ -185,7 +186,7 @@ form{
 }
 
 .pagination button {
-  background-color: #007BFF;
+  background-color: #647dee;
   color: white;
   border: none;
   border-radius: 5px;
@@ -195,7 +196,7 @@ form{
 }
 
 .pagination button.active {
-  background-color: #0056b3;
+  background-color: #422163;
 }
 
 /* CSS */
@@ -208,7 +209,7 @@ form{
 
 .welcome-header {
   font-size: 2rem;
-  border: 2px solid #007BFF;
+  border: 2px solid #647dee;
   border-radius: 0;
   animation: bounce 1s ease-in-out infinite;
   text-align: center;
@@ -227,30 +228,5 @@ form{
   }
 }
 
-/* Add this CSS to your component or import a CSS file */
-.profile-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.card {
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.card img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Add responsive styles for different screen sizes */
-@media (max-width: 576px) {
-  .card {
-    margin: 0 10px;
-  }
-}
 
 

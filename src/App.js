@@ -7,8 +7,13 @@ import Alert from "./components/Alert";
 import Signup from "./components/register";
 import Settings from "./components/Settings";
 import Profile from "./components/Profile";
-import VerifyEmailPage from "./components/VerifyEmailPage"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import VerifyEmailPage from "./components/VerifyEmailPage";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import SportState from "./context/SportState";
 
 function App() {
@@ -23,6 +28,7 @@ function App() {
       setAlert(null);
     }, 9000);
   };
+  
   return (
     <>
       <SportState showAlert={showAlert}>
@@ -30,7 +36,18 @@ function App() {
           <Navbar title="SPORTS!" showAlert={showAlert} />
           <Alert alert={alert} />
           <Routes>
-            <Route exact path="/" element={<Home showAlert={showAlert} />} />
+            <Route
+              exact
+              path="/"
+              element={
+                localStorage.getItem("token") ? (
+                  <Home showAlert={showAlert} />
+                ) : (
+                  <Navigate to="/signup" />
+                )
+              }
+            />
+
             <Route
               exact
               path="/forgetPassword"
@@ -44,8 +61,15 @@ function App() {
             <Route
               exact
               path="/login"
-              element={<Login showAlert={showAlert} />}
+              element={
+                localStorage.getItem("activate") === "success" ? (
+                  <Login showAlert={showAlert} />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
+
             <Route
               exact
               path="/settings"
@@ -58,7 +82,7 @@ function App() {
               element={<Profile showAlert={showAlert} />}
             />
 
-             <Route
+            <Route
               exact
               path="/verify/:token"
               element={<VerifyEmailPage showAlert={showAlert} />}

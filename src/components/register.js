@@ -83,8 +83,8 @@ function Signup(props) {
     <>
       <div className="container">
         <div className="row">
-          <div className="col-md-4"></div>
-          <div className="col-md-4">
+          <div className="col-md-6"></div>
+          <div className="col-md-6">
             <div className="display-4 text-center">SignUp 🤓</div>
             <br />
             <Alert alert={alert} />

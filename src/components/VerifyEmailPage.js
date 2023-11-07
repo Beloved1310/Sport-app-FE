@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Alert from "./Alert";
 import axios from "axios";
 
@@ -37,6 +37,7 @@ function VerifyEmailPage(props) {
 
       if (response.status === 200) {
         props.showAlert(response.data.message, "success");
+        localStorage.setItem("activate", "success");
         navigate("/login");
       } else if (response.status === 404) {
         props.showAlert(response.data.message, "warning");

@@ -27,7 +27,11 @@ function Navbar(props) {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/forgetPassword">
+              <Link
+                className="nav-link active"
+                aria-current="page"
+                to="/forgetPassword"
+              >
                 ForgetPassword
               </Link>
             </li>
@@ -35,7 +39,11 @@ function Navbar(props) {
 
           {!localStorage.getItem("token") ? (
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-              <Link className="btn btn-primary me-md-2" type="button" to="/login">
+              <Link
+                className="btn btn-primary me-md-2"
+                type="button"
+                to="/login"
+              >
                 <i className="fa-solid fa-user-check mx-2"></i>Login
               </Link>
               <Link className="btn btn-primary" to="/signup" type="button">

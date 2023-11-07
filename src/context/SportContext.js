@@ -1,5 +1,5 @@
-import { createContext } from 'react'
+import { createContext } from "react";
 
-const sportContext = createContext()
+const sportContext = createContext();
 
-export default sportContext
+export default sportContext;

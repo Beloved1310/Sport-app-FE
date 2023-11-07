@@ -28,7 +28,7 @@ function App() {
       setAlert(null);
     }, 9000);
   };
-  
+
   return (
     <>
       <SportState showAlert={showAlert}>

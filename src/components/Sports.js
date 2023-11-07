@@ -6,8 +6,7 @@ import axios from 'axios'
 const Sports = () => {
   let navigate = useNavigate();
   const context = useContext(SportContext);
-  
-  
+
   const [sports, setSport] = useState([])
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);

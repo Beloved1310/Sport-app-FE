@@ -43,7 +43,6 @@ function Login(props) {
         const { data } = response.data;
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.username);
-        // localStorage.setItem('success', json.success);
         props.showAlert(response.data.message, "success");
         navigate("/");
       } else if (response.status === 404) {

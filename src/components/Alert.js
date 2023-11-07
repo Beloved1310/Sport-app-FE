@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export default function Alert(props) {
   return (
@@ -13,5 +13,5 @@ export default function Alert(props) {
         </div>
       </div>
     )
-  )
+  );
 }

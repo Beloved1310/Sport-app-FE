@@ -13,9 +13,8 @@ function VerifyEmailPage(props) {
     },
   });
   const navigate = useNavigate();
-  
-  const { token } = useParams();
 
+  const { token } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

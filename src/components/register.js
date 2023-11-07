@@ -1,78 +1,84 @@
-import React, { useState } from 'react'
-import Alert from './Alert'
-import axios from 'axios'
+import React, { useState } from "react";
+import Alert from "./Alert";
+import axios from "axios";
 
 function Signup(props) {
   const [credentials, setCredentials] = useState({
-    username: '',
-    sportInterest: '',
-    email: '',
-    password: '',
-    confirm_password: '',
+    username: "",
+    sportInterest: "",
+    email: "",
+    password: "",
+    confirm_password: "",
     phone: {
-      countryCode: '',
-      localFormat: '',
+      countryCode: "",
+      localFormat: "",
     },
-  })
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (credentials.password !== credentials.confirm_password) {
-        props.showAlert('Password Incorrect', 'info');
+        props.showAlert("Password Incorrect", "info");
       } else {
-        const response = await axios.post('https://sports-nations-aeed0bb0afdc.herokuapp.com/api/user/register', {
-          username: credentials.username,
-          email: credentials.email,
-          sportInterest: credentials.sportInterest,
-          password: credentials.password,
-          confirm_password: credentials.confirm_password,
-          phone: credentials.phone,
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await axios.post(
+          "https://sports-nations-aeed0bb0afdc.herokuapp.com/api/user/register",
+          {
+            username: credentials.username,
+            email: credentials.email,
+            sportInterest: credentials.sportInterest,
+            password: credentials.password,
+            confirm_password: credentials.confirm_password,
+            phone: credentials.phone,
           },
-        });
-  
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
         if (response.status === 200) {
-          props.showAlert(response.data.message, 'success');
+          props.showAlert(response.data.message, "success");
           setCredentials({
-            username: '',
-            sportInterest: '',
-            email: '',
-            password: '',
-            confirm_password: '',
+            username: "",
+            sportInterest: "",
+            email: "",
+            password: "",
+            confirm_password: "",
             phone: {
-              countryCode: '',
-              localFormat: '',
+              countryCode: "",
+              localFormat: "",
             },
           });
         } else if (response.status === 400) {
-          props.showAlert(response.data.message, 'warning');
+          props.showAlert(response.data.message, "warning");
         } else {
-          props.showAlert('An error occurred', 'warning');
+          props.showAlert("An error occurred", "warning");
         }
       }
     } catch (error) {
       if (error.response) {
         // Handle the error message from the response
-        props.showAlert(error.response.data.message, 'warning');
+        props.showAlert(error.response.data.message, "warning");
       } else {
         // Handle other types of errors
         console.log(error);
-        props.showAlert('Input did not match', 'warning');
+        props.showAlert("Input did not match", "warning");
       }
     }
-  }
-  
+  };
 
   const onChange = (e) => {
-    if (e.target.name === 'phone.countryCode' || e.target.name === 'phone.localFormat') {
+    if (
+      e.target.name === "phone.countryCode" ||
+      e.target.name === "phone.localFormat"
+    ) {
       // Handle phone number inputs separately
       setCredentials({
         ...credentials,
         phone: {
           ...credentials.phone,
-          [e.target.name.split('.')[1]]: e.target.value,
+          [e.target.name.split(".")[1]]: e.target.value,
         },
       });
     } else {
@@ -91,7 +97,7 @@ function Signup(props) {
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="name" className="form-label">
-                  {' '}
+                  {" "}
                   <i className="fa-solid fa-file-signature"></i> Username
                 </label>
                 <input
@@ -109,7 +115,7 @@ function Signup(props) {
 
               <div className="mb-3">
                 <label htmlFor="sportinterest" className="form-label">
-                  {' '}
+                  {" "}
                   <i className="fa-solid fa-file-signature"></i> Sport Interest
                 </label>
                 <input
@@ -211,7 +217,7 @@ function Signup(props) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Signup
+export default Signup;
